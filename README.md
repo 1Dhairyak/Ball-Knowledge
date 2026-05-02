@@ -1,146 +1,193 @@
-# ⚽ Football Analytics Dashboard
+📄 PRODUCT REQUIREMENTS DOCUMENT (PRD)
+Product Name: BallKnowledge Lite
 
-Spring Boot backend + React frontend, powered by football-data.org.
+One-line: Ultra-fast, no-clutter football analytics platform for hardcore fans and analysts
 
----
+Phase 1 — Core Platform · Version 1.0 · May 2026
 
-## Quick Start (5 steps)
+DOCUMENT INFORMATION
+Field	Detail
+Product Name	BallKnowledge Lite
+Document Type	Product Requirements Document (PRD)
+Version	1.0
+Phase	Phase 1 — Core Platform
+Status	Draft
+Date	May 2026
+Author	Kinshu (Developer)
+Target Market	Hardcore football fans / Analysts
+Key Changes	N/A
+1 — EXECUTIVE SUMMARY
 
-### 1. Get your free API key
-Go to [football-data.org](https://www.football-data.org/client/register) → register → copy your token.
-Free tier: 10 requests/minute, covers PL, La Liga, Bundesliga, Serie A, Ligue 1, MLS.
+BallKnowledge Lite is a real-time football analytics platform designed for hardcore fans and analysts who need instant access to complete match data without clutter, ads, or delay.
 
-### 2. Add your key
-Edit `src/main/resources/application.yml`:
-```yaml
-football:
-  api:
-    api-key: YOUR_KEY_HERE   # ← paste here
-```
+Current platforms like SofaScore and FotMob provide data but suffer from fragmentation, ads, slow UI, and tab-heavy navigation, forcing users to switch screens repeatedly.
 
-### 3. Run the backend
-```bash
-./mvnw spring-boot:run
-# Starts on http://localhost:8080
-```
+Phase 1 delivers:
 
-### 4. Install and run the frontend
-```bash
-cd frontend
-npm install
-npm run dev
-# Starts on http://localhost:5173
-```
+Live scores (ultra-fast)
+Team comparison engine
+League standings
+All-in-one match dashboard
 
-### 5. Open the dashboard
-http://localhost:5173
+This phase proves:
+👉 Speed + simplicity + depth can coexist
+👉 “No bullshit UI” is a competitive advantage
 
----
+Phase 1 at a Glance
+Area	Specification	Notes
+Modules	4	Live, Standings, Comparison, Match Dashboard
+User Roles	1	All users (no auth needed initially)
+Platform	Web + Mobile	Same experience
+Differentiator 1	Zero-lag UI	No loading states
+Differentiator 2	All data on one screen	No tab switching
+Deferred	Auth, personalization	Later
+2 — PRODUCT VISION AND GOALS
+2.1 Vision
 
-## API Endpoints
+BallKnowledge Lite is the fastest football data engine for analysts — enabling instant insights without clutter or delay.
 
-### Module 1 — Live Match Tracker
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/matches` | Today's matches, all 7 leagues |
-| GET | `/api/matches/live` | Only in-play matches |
-| GET | `/api/matches/league/{code}` | Single league (e.g. `/league/PL`) |
-| GET | `/api/standings/{code}` | League table |
+2.2 Mission
 
-### Module 2 — Player Comparison
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/players/search?name=Haaland` | Search players |
-| GET | `/api/players/{id}/stats?season=2024` | One player's stats |
-| POST | `/api/players/compare` | Compare up to 3 players |
+Give football fans all match intelligence instantly, without friction.
 
-**POST body:**
-```json
-{ "playerIds": [44, 617, 8004], "season": "2024" }
-```
+2.3 Goals
+Reduce data access time to <1 second
+Eliminate navigation depth (max 2 clicks to any data)
+Display full match data on single screen
+Achieve <300ms API response time
+Handle real-time updates without refresh
+Reduce UI clutter by 50% vs competitors
+2.4 Design Principles
+Speed-first — performance > visuals
+No bullshit UI — remove anything unnecessary
+Single-screen philosophy — no tab jumping
+Real-time always — no manual refresh
+3 — TARGET USERS
+Persona 1 — Hardcore Analyst
+Attribute	Detail
+Name	Arjun, 24, Football Analyst
+Business	Freelance / Content creator
+Goals	Instant match insights
+Pains	Switching apps, slow data
+Usage	Mobile + Desktop daily
+Key Features	Live stats, comparison
+4 — MARKET CONTEXT
+Problem
 
-### Module 3 — Form Predictor
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/form/team/{id}` | Last 10 results + stats |
-| GET | `/api/form/predict?homeTeamId=65&awayTeamId=57` | Win probability |
+Football apps overload users with:
 
----
+Ads
+Delayed updates
+Fragmented data
 
-## Key Team IDs (football-data.org)
-```
-65  → Manchester City       64  → Liverpool FC
-57  → Arsenal FC            61  → Chelsea FC
-66  → Manchester United     58  → Aston Villa
-86  → Real Madrid           81  → Barcelona
-5   → Bayern Munich         108 → PSG
-```
+Even leaders like SofaScore:
 
----
+Require multiple tabs
+Prioritize UI over speed
+Positioning
 
-## Project Structure
-```
-football-dashboard/
-├── pom.xml
-├── src/main/
-│   ├── java/com/football/dashboard/
-│   │   ├── FootballDashboardApplication.java
-│   │   ├── config/
-│   │   │   ├── ApiClientConfig.java    ← WebClient + API key
-│   │   │   ├── CacheConfig.java        ← Caffeine TTLs
-│   │   │   └── CorsConfig.java         ← Allow React dev server
-│   │   ├── controller/
-│   │   │   ├── Controllers.java        ← All 3 module REST endpoints
-│   │   │   └── GlobalExceptionHandler.java
-│   │   ├── service/
-│   │   │   ├── MatchService.java       ← Module 1
-│   │   │   ├── PlayerService.java      ← Module 2
-│   │   │   ├── FormPredictorService.java ← Module 3
-│   │   │   └── CacheEvictScheduler.java  ← Auto-refresh
-│   │   └── dto/
-│   │       └── Dtos.java               ← Response shapes
-│   └── resources/
-│       └── application.yml
-└── frontend/
-    └── src/
-        └── services/
-            └── api.js                  ← React fetch helpers
-```
+BallKnowledge Lite combines:
+👉 real-time speed + full analytics in one screen
+— which competitors don’t deliver together
 
----
+5 — SCOPE
+5.1 In Scope
+Live Matches Module
+League Standings Module
+Team Comparison Module
+Match Analytics Dashboard
+5.2 Out of Scope
+User login (not needed yet)
+Notifications (later)
+AI predictions (future phase)
+6 — FEATURE REQUIREMENTS
+6.1 Live Matches
+Overview
 
-## Upgrading from Free → Paid API Tier
+Shows all matches instantly with filters.
 
-The free tier from football-data.org covers the 5 big European leagues well.
-For Saudi Pro League, player ratings, and real-time live updates:
+Features
+LIVE / UPCOMING / FINISHED filter
+Real-time score updates
+Match time + events
+7 — Standings
+League table
+Points, GD, wins, losses
+Sorted automatically
+8 — Team Comparison
+Compare two teams
+Stats:
+Goals
+Possession
+Form
+Visual difference display
+9 — Match Dashboard
+One screen shows:
+Score
+Stats
+Lineups
+Momentum
 
-- **API-Football (RapidAPI)** — drop-in replacement, same REST style
-- Change `football.api.base-url` in `application.yml`
-- Update auth header in `ApiClientConfig.java` from `X-Auth-Token` to `x-rapidapi-key`
+📌 Phase 2: Heatmaps, advanced analytics
 
----
+SCREEN INVENTORY
+ID	Screen	Action
+LIV-01	Live Matches	View matches
+STD-01	Standings	View table
+CMP-01	Compare	Compare teams
+MAT-01	Match Dashboard	View full data
 
-## Scaling: Swap Caffeine for Redis
+Total: 4 screens
 
-When you deploy (e.g. to Railway or Render), replace in-memory Caffeine with Redis:
+KEY USER FLOW
+FLOW-01 — Check Match
+User → opens app → sees live matches
+User → clicks match → dashboard loads
+System → displays full data instantly
 
-1. Add to `pom.xml`:
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-redis</artifactId>
-</dependency>
-```
+Success: All data visible in one screen
 
-2. Update `application.yml`:
-```yaml
-spring:
-  cache:
-    type: redis
-  data:
-    redis:
-      host: your-redis-host
-      port: 6379
-```
+STRATEGIC DIFFERENTIATORS
+#	Differentiator	Gap
+1	No ads	Competitors clutter UI
+2	Instant load	Others lag
+3	Single screen data	Others use tabs
+4	Clean UI	Others overload
+USER STORIES
+View live scores instantly
+Compare teams quickly
+Analyze match in one screen
+FUNCTIONAL REQUIREMENTS
+System must show live scores in real-time
+System must update without refresh
+System must load under 1 second
+NON-FUNCTIONAL
+Category	Requirement
+Performance	<300ms response
+Security	HTTPS
+Reliability	99.9% uptime
+ASSUMPTIONS
+API provides real-time data
+Users prefer speed over visuals
+KPIs
+90% users view match in <2 sec
+Session time >5 min
+Return rate >60%
+OUT OF SCOPE (PHASE 2)
+Login system
+Notifications
+AI predictions
+OPEN QUESTIONS
+Which API to use long-term?
+How to handle rate limits?
+GLOSSARY
+xG = expected goals
+Live = real-time match
+⚠️ HONEST FEEDBACK
 
-That's it — `@Cacheable` annotations stay the same.
+This is a VERY STRONG project idea — better than your current one if executed properly.
+
+BUT:
+
+Screen count is low → needs expansion later
+Add 1 killer feature (AI or predictive insight) in Phase 2
